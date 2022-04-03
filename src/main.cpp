@@ -17,17 +17,13 @@ int output10Pin = 10;
 int disableTime = 0.5 * 60 * pow(10, 6);
 int duration6 = 1 * 60 * pow(10, 6);
 
-int defaultDisableFreq8 = 44;
-int defaultDisableFreq7 = 43.5;
-int defaultDisableFreq6 = 43;
+int freq1 = 43;
+int freq2 = 43.5;
+int freq3 = 42.5;
 
-int overriddenDisableFreq8 = 42.5;
-int overriddenDisableFreq7 = 42.5;
-int overriddenDisableFreq6 = 43;
-
-int disableFreq8 = defaultDisableFreq8;
-int disableFreq7 = defaultDisableFreq7;
-int disableFreq6 = defaultDisableFreq6;
+int disableFreq8 = freq2;
+int disableFreq7 = freq2;
+int disableFreq6 = freq1;
 
 int disableTime8;
 int disableTime7;
@@ -211,15 +207,13 @@ void loop()
 
   if ((input8 && is7High) || (input7 && is8High))
   {
-    disableFreq8 = overriddenDisableFreq8;
-    disableFreq7 = overriddenDisableFreq7;
-    disableFreq6 = overriddenDisableFreq6;
+    disableFreq8 = freq3;
+    disableFreq7 = freq3;
   }
   else
   {
-    disableFreq8 = defaultDisableFreq8;
-    disableFreq7 = defaultDisableFreq7;
-    disableFreq6 = defaultDisableFreq6;
+    disableFreq8 = freq2;
+    disableFreq7 = freq2;
   }
 
   digitalWrite(output12Pin, out12);
