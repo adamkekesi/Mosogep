@@ -14,16 +14,16 @@ int output12Pin = 12;
 int output11Pin = 11;
 int output10Pin = 10;
 
-int disableTime = 3 * 60 * pow(10, 6);
+int disableTime = 0.5 * 60 * pow(10, 6);
 int duration6 = 1 * 60 * pow(10, 6);
 
-int defaultDisableFreq8 = 41;
-int defaultDisableFreq7 = 41;
-int defaultDisableFreq6 = 41;
+int defaultDisableFreq8 = 44;
+int defaultDisableFreq7 = 43.5;
+int defaultDisableFreq6 = 43;
 
-int overriddenDisableFreq8 = 41;
-int overriddenDisableFreq7 = 41;
-int overriddenDisableFreq6 = 41;
+int overriddenDisableFreq8 = 42.5;
+int overriddenDisableFreq7 = 42.5;
+int overriddenDisableFreq6 = 43;
 
 int disableFreq8 = defaultDisableFreq8;
 int disableFreq7 = defaultDisableFreq7;
@@ -66,6 +66,27 @@ void setup()
   pinMode(output10Pin, OUTPUT);
 
   Serial.begin(9600);
+}
+
+unsigned long CalculateTimeSinceLastLoop()
+{
+  unsigned long time = micros();
+
+  if (lastTime == -1)
+  {
+    lastTime = time;
+    return -1;
+  }
+
+  // overflow
+  if (time < lastTime)
+  {
+    lastTime = time;
+    return ULONG_MAX - lastTime + time;
+  }
+
+  lastTime = time;
+  return time - lastTime;
 }
 
 void loop()
@@ -204,25 +225,4 @@ void loop()
   digitalWrite(output12Pin, out12);
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
-}
-
-unsigned long CalculateTimeSinceLastLoop()
-{
-  unsigned long time = micros();
-
-  if (lastTime == -1)
-  {
-    lastTime = time;
-    return;
-  }
-
-  // overflow
-  if (time < lastTime)
-  {
-    lastTime = time;
-    return ULONG_MAX - lastTime + time;
-  }
-
-  lastTime = time;
-  return time - lastTime;
 }
