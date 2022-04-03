@@ -15,7 +15,7 @@ int output11Pin = 11;
 int output10Pin = 10;
 
 int disableTime = 3 * 60 * pow(10, 6);
-int startTime6 = 1 * 60 * pow(10, 6);
+int duration6 = 1 * 60 * pow(10, 6);
 
 int defaultDisableFreq8 = 41;
 int defaultDisableFreq7 = 41;
@@ -106,21 +106,21 @@ void loop()
     is7Enabled = true;
     if (is7Overridden)
     {
-      out10 = HIGH;
       out11 = LOW;
     }
     else
     {
-      out10 = LOW;
       out11 = HIGH;
     }
   }
-  if (frequency <= disableFreq7 || disableTime7 >= disableTime)
+  if (!is7Overridden)
   {
-    is7Enabled = false;
-    out10 = LOW;
-    out11 = LOW;
-    disableTime7 = 0;
+    if (frequency <= disableFreq7 || disableTime7 >= disableTime)
+    {
+      is7Enabled = false;
+      out11 = LOW;
+      disableTime7 = 0;
+    }
   }
 
   // 6
@@ -128,26 +128,35 @@ void loop()
   {
     disableTime6 += timeSinceLastLoop;
   }
+
+  // még nem telt le az 5p
   if (time6 >= 0)
   {
-    time6 += timeSinceLastLoop;
-    if (time6 >= startTime6)
-    {
-      time6 = -1;
-      is6Enabled = true;
-      is7Overridden = true;
-    }
+    time6 -= timeSinceLastLoop;
   }
-  if (!is6Enabled && input6 == HIGH)
+  else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
   {
-    time6 = 0;
+    time6 = -1;
+  }
+
+  if (time6 < 0 && input6 == HIGH)
+  {
+    time6 = duration6;
+    is7Overridden = true;
   }
   if (frequency <= disableFreq6 || disableTime6 >= disableTime)
   {
     disableTime6 = 0;
-    is7Overridden = false;
+    disableTime7 = 0;
+    is6Enabled = false;
+    is7Enabled = false;
+    if (time6 < 0)
+    {
+      is7Overridden = false;
+    }
   }
 
+  // 7 és 8
   if (cooldown8 > 0)
   {
     cooldown8 -= timeSinceLastLoop;
@@ -179,7 +188,6 @@ void loop()
     cooldown7 = cooldown;
   }
 
-  // 7 és 8
   if ((input8 && is7High) || (input7 && is8High))
   {
     disableFreq8 = overriddenDisableFreq8;
