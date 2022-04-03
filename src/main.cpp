@@ -14,7 +14,7 @@ int output12Pin = 12;
 int output11Pin = 11;
 int output10Pin = 10;
 
-int disableTime = 0.5 * 60 * pow(10, 6);
+unsigned long disableTime = 0.5 * 60 * pow(10, 6);
 int duration6 = 1 * 60 * pow(10, 6);
 
 int freq1 = 43;
@@ -25,11 +25,11 @@ int disableFreq8 = freq2;
 int disableFreq7 = freq2;
 int disableFreq6 = freq1;
 
-int disableTime8;
-int disableTime7;
-int disableTime6;
+unsigned long disableTime8;
+unsigned long disableTime7;
+unsigned long disableTime6;
 
-int time6 = -1;
+unsigned long time6 = -1;
 
 int out12 = LOW;
 int out11 = LOW;
@@ -46,8 +46,8 @@ bool is7High = false;
 
 int cooldown = pow(10, 6);
 
-int cooldown8 = -1;
-int cooldown7 = -1;
+unsigned long cooldown8 = -1;
+unsigned long cooldown7 = -1;
 
 unsigned long lastTime = -1; // microsec
 
@@ -71,7 +71,7 @@ unsigned long CalculateTimeSinceLastLoop()
   if (lastTime == -1)
   {
     lastTime = time;
-    return -1;
+    return 0;
   }
 
   // overflow
