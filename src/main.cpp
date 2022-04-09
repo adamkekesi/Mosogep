@@ -219,4 +219,5 @@ void loop()
   digitalWrite(output12Pin, out12);
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
+  Serial.println(frequency);
 }
