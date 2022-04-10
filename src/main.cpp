@@ -51,6 +51,8 @@ unsigned long cooldown7 = -1;
 
 unsigned long lastTime = -1; // microsec
 
+unsigned long printTime = 0;
+
 void setup()
 {
   pinMode(freqPin, INPUT);
@@ -219,5 +221,10 @@ void loop()
   digitalWrite(output12Pin, out12);
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
-  Serial.println(frequency);
+  printTime += timeSinceLastLoop;
+  if (printTime > pow(10, 6))
+  {
+    Serial.println(frequency);
+    printTime = 0;
+  }
 }
