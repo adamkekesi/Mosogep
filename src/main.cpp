@@ -15,7 +15,7 @@ int output11Pin = 11;
 int output10Pin = 10;
 
 unsigned long disableTime = 0.5 * 60 * pow(10, 6);
-int duration6 = 1 * 60 * pow(10, 6);
+unsigned long duration6 = 1 * 60 * pow(10, 6);
 
 int freq1 = 43;
 int freq2 = 43.5;
@@ -44,7 +44,7 @@ bool is6Enabled = false;
 bool is8High = false;
 bool is7High = false;
 
-int cooldown = pow(10, 6);
+unsigned long cooldown = pow(10, 6);
 
 unsigned long cooldown8 = -1;
 unsigned long cooldown7 = -1;
@@ -69,7 +69,6 @@ void setup()
 unsigned long CalculateTimeSinceLastLoop()
 {
   unsigned long time = micros();
-
   if (lastTime == -1)
   {
     lastTime = time;
@@ -83,8 +82,9 @@ unsigned long CalculateTimeSinceLastLoop()
     return ULONG_MAX - lastTime + time;
   }
 
+  unsigned long diff = time - lastTime;
   lastTime = time;
-  return time - lastTime;
+  return diff;
 }
 
 void loop()
@@ -221,7 +221,9 @@ void loop()
   digitalWrite(output12Pin, out12);
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
+
   printTime += timeSinceLastLoop;
+
   if (printTime > pow(10, 6))
   {
     Serial.println(frequency);
