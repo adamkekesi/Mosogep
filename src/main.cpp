@@ -2,6 +2,13 @@
 #include "FrequencyMeasurement.h"
 #include "stdlib.h"
 
+enum State
+{
+  Disabled,
+  Enabled,
+  EnabledAndEmitting
+};
+
 FrequencyMeasurement freq = FrequencyMeasurement();
 
 unsigned long ULONG_MAX = 0x7fffffffL * 2UL + 1UL;
@@ -39,7 +46,7 @@ bool is7Overridden = false;
 
 bool is8Enabled = false;
 bool is7Enabled = false;
-bool is6Enabled = false;
+State stateOf6 = Disabled;
 
 bool is8High = false;
 bool is7High = false;
@@ -122,13 +129,13 @@ void loop()
   }
   if (!is7Enabled && input7 == HIGH)
   {
-    is7Enabled = true;
     if (is7Overridden)
     {
       out11 = LOW;
     }
     else
     {
+      is7Enabled = true;
       out11 = HIGH;
     }
   }
@@ -143,36 +150,42 @@ void loop()
   }
 
   // 6
-  if (is6Enabled)
+  if (stateOf6 == EnabledAndEmitting)
   {
     disableTime6 += timeSinceLastLoop;
+    out10 = HIGH;
   }
 
   // még nem telt le az 5p
-  if (time6 >= 0)
+  if (time6 > 0)
   {
     time6 -= timeSinceLastLoop;
   }
   else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
   {
     time6 = -1;
+    stateOf6 = Disabled;
   }
 
-  if (time6 < 0 && input6 == HIGH)
+  // kapcsol
+  if (stateOf6 == Disabled && input6 == HIGH)
   {
     time6 = duration6;
     is7Overridden = true;
+    stateOf6 = Enabled;
   }
   if (frequency <= disableFreq6 || disableTime6 >= disableTime)
   {
     disableTime6 = 0;
-    disableTime7 = 0;
-    is6Enabled = false;
-    is7Enabled = false;
+    out10 = LOW;
     if (time6 < 0)
     {
       is7Overridden = false;
     }
+  }
+  if (stateOf6 == Enabled && input7 == HIGH)
+  {
+    stateOf6 = EnabledAndEmitting;
   }
 
   // 7 és 8
