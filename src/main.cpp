@@ -6,7 +6,8 @@ enum State
 {
   Disabled,
   Enabled,
-  EnabledAndEmitting
+  EnabledAndEmitting,
+  DisabledButStillEmitting
 };
 
 FrequencyMeasurement freq = FrequencyMeasurement();
@@ -150,7 +151,7 @@ void loop()
   }
 
   // 6
-  if (stateOf6 == EnabledAndEmitting)
+  if (stateOf6 == EnabledAndEmitting || stateOf6 == DisabledButStillEmitting)
   {
     disableTime6 += timeSinceLastLoop;
     out10 = HIGH;
@@ -164,7 +165,15 @@ void loop()
   else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
   {
     time6 = -1;
-    stateOf6 = Disabled;
+    if (stateOf6 == Enabled)
+    {
+      is7Overridden = false;
+      stateOf6 = Disabled;
+    }
+    if (stateOf6 == EnabledAndEmitting)
+    {
+      stateOf6 = DisabledButStillEmitting;
+    }
   }
 
   // kapcsol
@@ -178,14 +187,22 @@ void loop()
   {
     disableTime6 = 0;
     out10 = LOW;
-    if (time6 < 0)
+
+    if (stateOf6 == EnabledAndEmitting)
     {
+      stateOf6 = Enabled;
+    }
+
+    if (stateOf6 == DisabledButStillEmitting)
+    {
+      stateOf6 = Disabled;
       is7Overridden = false;
     }
   }
   if (stateOf6 == Enabled && input7 == HIGH)
   {
     stateOf6 = EnabledAndEmitting;
+    out10 = HIGH;
   }
 
   // 7 és 8
