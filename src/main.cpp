@@ -22,7 +22,7 @@ int output12Pin = 12;
 int output11Pin = 11;
 int output10Pin = 10;
 
-unsigned long disableTime = 0.5 * 60 * pow(10, 6);
+unsigned long disableTime = 4 * 60 * pow(10, 6);
 unsigned long duration6 = 1 * 60 * pow(10, 6);
 
 int freq1 = 43;
