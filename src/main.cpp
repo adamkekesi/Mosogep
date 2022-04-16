@@ -157,25 +157,6 @@ void loop()
     out10 = HIGH;
   }
 
-  // még nem telt le az 5p
-  if (time6 > 0)
-  {
-    time6 -= timeSinceLastLoop;
-  }
-  else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
-  {
-    time6 = -1;
-    if (stateOf6 == Enabled)
-    {
-      is7Overridden = false;
-      stateOf6 = Disabled;
-    }
-    if (stateOf6 == EnabledAndEmitting)
-    {
-      stateOf6 = DisabledButStillEmitting;
-    }
-  }
-
   // kapcsol
   if (stateOf6 == Disabled && input6 == HIGH)
   {
@@ -199,6 +180,26 @@ void loop()
       is7Overridden = false;
     }
   }
+  
+  // még nem telt le az 5p
+  if (time6 > 0)
+  {
+    time6 -= timeSinceLastLoop;
+  }
+  else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
+  {
+    time6 = -1;
+    if (stateOf6 == Enabled)
+    {
+      is7Overridden = false;
+      stateOf6 = Disabled;
+    }
+    if (stateOf6 == EnabledAndEmitting)
+    {
+      stateOf6 = DisabledButStillEmitting;
+    }
+  }
+
   if (stateOf6 == Enabled && input7 == HIGH)
   {
     stateOf6 = EnabledAndEmitting;
