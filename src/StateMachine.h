@@ -32,7 +32,9 @@ public:
                  int disableFreq11,
                  unsigned long cooldown6);
 
-    ~StateMachine();
+    ~StateMachine()
+    {
+    }
 
     bool Is7Overridden();
 
@@ -64,7 +66,9 @@ public:
     {
     }
 
-    virtual void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+    virtual void Tick(unsigned long timeSinceLastLoop, int input6, double frequency)
+    {
+    }
 };
 
 class Inactive6 : public State6
