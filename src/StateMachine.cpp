@@ -6,8 +6,14 @@ StateMachine::StateMachine(unsigned long disableTime10,
                            int disableFreq11,
                            unsigned long cooldown6)
 {
-    state6 = new Inactive6(this);
-    state7 = new Inactive7(this);
+    StateMachine *sm = this;
+    if (sm)
+    {
+        Serial.println("sm");
+    }
+
+    state6 = new Inactive6(sm);
+    state7 = new Inactive7(sm);
     this->disableTime10 = disableTime10;
     this->disableTime11 = disableTime11;
     this->cooldown6 = cooldown6;
@@ -38,7 +44,7 @@ void StateMachine::Tick(unsigned long timeSinceLastLoop, int input7, int input6,
 
 void StateMachine::ChangeState6(State6 *newState)
 {
-    State6* previous = state6;
+    State6 *previous = state6;
     state6 = newState;
     if (previous)
     {
@@ -48,7 +54,7 @@ void StateMachine::ChangeState6(State6 *newState)
 
 void StateMachine::ChangeState7(State7 *newState)
 {
-    State7* previous = state7;
+    State7 *previous = state7;
     state7 = newState;
     if (previous)
     {
