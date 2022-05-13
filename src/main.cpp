@@ -169,6 +169,8 @@ void loop()
   if (printTime > pow(10, 6))
   {
     Serial.println(frequency);
+    Serial.println("6: " + stateMachine.state6->name);
+    Serial.println("7: " + stateMachine.state7->name);
     printTime = 0;
   }
 }
