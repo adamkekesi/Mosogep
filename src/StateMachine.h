@@ -1,8 +1,16 @@
+#include <Arduino.h>
 #if !defined(StateMachine_h)
 #define StateMachine_h
-#include "States6.h"
-#include "States7.h"
 
+class State6;
+class Inactive6;
+class Active6;
+class State7;
+class Inactive7;
+class Active7;
+class OverriddenActive7;
+
+using namespace std;
 class StateMachine
 {
 private:
@@ -22,55 +30,176 @@ public:
                  unsigned long disableTime11,
                  int disableFreq10,
                  int disableFreq11,
-                 unsigned long cooldown6)
-    {
-        state6 = new Inactive6(this);
-        state7 = new Inactive7(this);
-        this->disableTime10 = disableTime10;
-        this->disableTime11 = disableTime11;
-        this->cooldown6 = cooldown6;
-        this->disableFreq10 = disableFreq10;
-        this->disableFreq11 = disableFreq11;
-    }
+                 unsigned long cooldown6);
 
     ~StateMachine();
 
-    bool Is7Overridden()
+    bool Is7Overridden();
+
+    int GetStateOf11();
+
+    int GetStateOf10();
+
+    void Tick(unsigned long timeSinceLastLoop, int input7, int input6, double frequency);
+
+    void ChangeState6(State6 *newState);
+
+    void ChangeState7(State7 *newState);
+};
+
+class State6
+{
+protected:
+    StateMachine *stateMachine;
+
+    State6(StateMachine *stateMachine)
     {
-        return state6->name == "Active";
+        stateMachine = stateMachine;
     }
 
-    int GetStateOf11(){
-        return state7->is11Emitting ? HIGH : LOW;
-    }
+public:
+    String name = "";
 
-    int GetStateOf10(){
-        return state7->is10Emitting ? HIGH : LOW;
-    }
-
-    void Tick(unsigned long timeSinceLastLoop, int input7, int input6, double frequency)
+    virtual ~State6()
     {
-        state6->Tick(timeSinceLastLoop, input6, frequency);
-        state7->Tick(timeSinceLastLoop, input7, frequency);
     }
 
-    void ChangeState6(State6 *newState)
+    virtual void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+};
+
+class Inactive6 : public State6
+{
+private:
+    void SwitchToActive();
+
+public:
+    String name = "Inactive";
+
+    Inactive6(StateMachine *sm) : State6(sm)
     {
-        if (state6)
-        {
-            delete state6;
-        }
-        state6 = newState;
     }
 
-    void ChangeState7(State7 *newState)
+    ~Inactive6()
     {
-        if (state7)
-        {
-            delete state7;
-        }
-        state7 = newState;
     }
+
+    void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+};
+
+class Active6 : public State6
+{
+private:
+    unsigned long timer = 0;
+
+    void SwitchToInactive();
+
+public:
+    String name = "Active";
+
+    Active6(StateMachine *sm) : State6(sm)
+    {
+    }
+
+    ~Active6()
+    {
+    }
+
+    void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+};
+
+class State7
+{
+protected:
+    StateMachine *stateMachine;
+
+    State7(StateMachine *stateMachine)
+    {
+        stateMachine = stateMachine;
+    }
+
+public:
+    String name = "";
+
+    bool is10Emitting;
+    bool is11Emitting;
+
+    virtual ~State7()
+    {
+    }
+
+    virtual void Tick(unsigned long timeSinceLastLoop, int input7, double frequency)
+    {
+    }
+};
+
+class Inactive7 : public State7
+{
+private:
+    void SwitchToActive();
+
+public:
+    String name = "Inactive";
+
+    bool is10Emitting = false;
+    bool is11Emitting = false;
+
+    Inactive7(StateMachine *sm) : State7(sm)
+    {
+    }
+
+    ~Inactive7()
+    {
+    }
+
+    void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
+};
+
+class Active7 : public State7
+{
+private:
+    unsigned long timer = 0;
+
+    void SwitchToInactive();
+
+public:
+    String name = "Active";
+
+    bool is10Emitting = false;
+    bool is11Emitting = true;
+
+    Active7(StateMachine *sm) : State7(sm)
+    {
+    }
+
+    ~Active7()
+    {
+    }
+
+    void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
+};
+
+class OverriddenActive7 : public State7
+{
+private:
+    unsigned long timer = 0;
+
+    void SwitchToInactive();
+
+public:
+    String name = "OverriddenActive";
+
+    bool is10Emitting = true;
+    bool is11Emitting = false;
+
+    OverriddenActive7(StateMachine *sm) : State7(sm)
+    {
+    }
+
+    ~OverriddenActive7()
+    {
+    }
+
+    void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
 };
 
 #endif // StateMachine_h
