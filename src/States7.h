@@ -121,6 +121,9 @@ private:
 public:
     String name = "OverriddenActive";
 
+    bool is10Emitting = true;
+    bool is11Emitting = false;
+
     OverriddenActive7(StateMachine *sm) : State7(sm)
     {
     }
