@@ -38,10 +38,13 @@ void StateMachine::Tick(unsigned long timeSinceLastLoop, int input7, int input6,
 
 void StateMachine::ChangeState6(State6 *newState)
 {
+    Serial.println("2");
     if (state6)
     {
+        Serial.println("3");
         delete state6;
     }
+    Serial.println("4");
     state6 = newState;
 }
 
@@ -56,6 +59,7 @@ void StateMachine::ChangeState7(State7 *newState)
 
 void Inactive6::SwitchToActive()
 {
+    Serial.println("1");
     stateMachine->ChangeState6(new Active6(stateMachine));
 }
 
