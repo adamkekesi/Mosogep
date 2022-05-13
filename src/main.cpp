@@ -139,6 +139,7 @@ void loop()
   stateMachine.disableFreq10 = disableFreq10;
   stateMachine.disableFreq11 = disableFreq11;
   stateMachine.Tick(timeSinceLastLoop, input7, input6, frequency);
+    Serial.println("1");
 
   out11 = stateMachine.GetStateOf11();
   out10 = stateMachine.GetStateOf10();

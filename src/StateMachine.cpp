@@ -34,7 +34,6 @@ void StateMachine::Tick(unsigned long timeSinceLastLoop, int input7, int input6,
 {
     state6->Tick(timeSinceLastLoop, input6, frequency);
     state7->Tick(timeSinceLastLoop, input7, frequency);
-
 }
 
 void StateMachine::ChangeState6(State6 *newState)
@@ -60,7 +59,6 @@ void StateMachine::ChangeState7(State7 *newState)
 void Inactive6::SwitchToActive()
 {
     stateMachine->ChangeState6(new Active6(stateMachine));
-    Serial.println("3");
 }
 
 void Inactive6::Tick(unsigned long timeSinceLastLoop, int input6, double frequency)
@@ -69,7 +67,6 @@ void Inactive6::Tick(unsigned long timeSinceLastLoop, int input6, double frequen
     {
         SwitchToActive();
     }
-    Serial.println("4");
 }
 
 void Active6::SwitchToInactive()
