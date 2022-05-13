@@ -143,6 +143,8 @@ void loop()
   out11 = stateMachine.GetStateOf11();
   out10 = stateMachine.GetStateOf10();
 
+  Serial.println("7");
+
   // 8
   if (is8Enabled)
   {
