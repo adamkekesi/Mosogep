@@ -1,14 +1,7 @@
 #include <Arduino.h>
 #include "FrequencyMeasurement.h"
 #include "stdlib.h"
-
-enum State
-{
-  Disabled,
-  Enabled,
-  EnabledAndEmitting,
-  DisabledButStillEmitting
-};
+#include "StateMachine.h"
 
 FrequencyMeasurement freq = FrequencyMeasurement();
 
@@ -29,25 +22,17 @@ int freq1 = 43;
 int freq2 = 43.5;
 int freq3 = 42.5;
 
-int disableFreq8 = freq2;
-int disableFreq7 = freq2;
-int disableFreq6 = freq1;
+int disableFreq12 = freq2;
+int disableFreq11 = freq2;
+int disableFreq10 = freq1;
 
-unsigned long disableTime8;
-unsigned long disableTime7;
-unsigned long disableTime6;
-
-unsigned long time6 = -1;
+unsigned long disableTime12;
 
 int out12 = LOW;
 int out11 = LOW;
 int out10 = LOW;
 
-bool is7Overridden = false;
-
 bool is8Enabled = false;
-bool is7Enabled = false;
-State stateOf6 = Disabled;
 
 bool is8High = false;
 bool is7High = false;
@@ -60,6 +45,8 @@ unsigned long cooldown7 = -1;
 unsigned long lastTime = -1; // microsec
 
 unsigned long printTime = 0;
+
+StateMachine stateMachine(disableTime, disableTime, disableFreq10, disableFreq11, duration6);
 
 void setup()
 {
@@ -102,109 +89,9 @@ void loop()
 
   double frequency = freq.frequency;
 
-  double input8 = digitalRead(input8Pin);
-  double input7 = digitalRead(input7Pin);
-  double input6 = digitalRead(input6Pin);
-
-  // 8
-  if (is8Enabled)
-  {
-    disableTime8 += timeSinceLastLoop;
-  }
-  if (!is8Enabled && input8 == HIGH)
-  {
-    is8Enabled = true;
-    out12 = HIGH;
-  }
-  if (frequency <= disableFreq8 || disableTime8 >= disableTime)
-  {
-    is8Enabled = false;
-    out12 = LOW;
-    disableTime8 = 0;
-  }
-
-  // 7
-  if (is7Enabled)
-  {
-    disableTime7 += timeSinceLastLoop;
-  }
-  if (!is7Enabled && input7 == HIGH)
-  {
-    if (is7Overridden)
-    {
-      out11 = LOW;
-    }
-    else
-    {
-      is7Enabled = true;
-      out11 = HIGH;
-    }
-  }
-  if (!is7Overridden)
-  {
-    if (frequency <= disableFreq7 || disableTime7 >= disableTime)
-    {
-      is7Enabled = false;
-      out11 = LOW;
-      disableTime7 = 0;
-    }
-  }
-
-  // 6
-  if (stateOf6 == EnabledAndEmitting || stateOf6 == DisabledButStillEmitting)
-  {
-    disableTime6 += timeSinceLastLoop;
-    out10 = HIGH;
-  }
-
-  // kapcsol
-  if (stateOf6 == Disabled && input6 == HIGH)
-  {
-    time6 = duration6;
-    is7Overridden = true;
-    stateOf6 = Enabled;
-  }
-  if (frequency <= disableFreq6 || disableTime6 >= disableTime)
-  {
-    disableTime6 = 0;
-    out10 = LOW;
-
-    if (stateOf6 == EnabledAndEmitting)
-    {
-      stateOf6 = Enabled;
-    }
-
-    if (stateOf6 == DisabledButStillEmitting)
-    {
-      stateOf6 = Disabled;
-      is7Overridden = false;
-    }
-  }
-  
-  // még nem telt le az 5p
-  if (time6 > 0)
-  {
-    time6 -= timeSinceLastLoop;
-  }
-  else // már letelt az 5p, vagy nincs is a 6os bekapcsolva
-  {
-    time6 = -1;
-    if (stateOf6 == Enabled)
-    {
-      is7Overridden = false;
-      stateOf6 = Disabled;
-    }
-    if (stateOf6 == EnabledAndEmitting)
-    {
-      stateOf6 = DisabledButStillEmitting;
-    }
-  }
-
-  if (stateOf6 == Enabled && input7 == HIGH)
-  {
-    stateOf6 = EnabledAndEmitting;
-    out10 = HIGH;
-  }
+  int input8 = digitalRead(input8Pin);
+  int input7 = digitalRead(input7Pin);
+  int input6 = digitalRead(input6Pin);
 
   // 7 és 8
   if (cooldown8 > 0)
@@ -240,13 +127,37 @@ void loop()
 
   if ((input8 && is7High) || (input7 && is8High))
   {
-    disableFreq8 = freq3;
-    disableFreq7 = freq3;
+    disableFreq12 = freq3;
+    disableFreq11 = freq3;
   }
   else
   {
-    disableFreq8 = freq2;
-    disableFreq7 = freq2;
+    disableFreq12 = freq2;
+    disableFreq11 = freq2;
+  }
+
+  stateMachine.disableFreq10 = disableFreq10;
+  stateMachine.disableFreq11 = disableFreq11;
+  stateMachine.Tick(timeSinceLastLoop, input7, input6, frequency);
+
+  out11 = stateMachine.GetStateOf11();
+  out10 = stateMachine.GetStateOf10();
+
+  // 8
+  if (is8Enabled)
+  {
+    disableTime12 += timeSinceLastLoop;
+  }
+  if (!is8Enabled && input8 == HIGH)
+  {
+    is8Enabled = true;
+    out12 = HIGH;
+  }
+  if (frequency <= disableFreq12 || disableTime12 >= disableTime)
+  {
+    is8Enabled = false;
+    out12 = LOW;
+    disableTime12 = 0;
   }
 
   digitalWrite(output12Pin, out12);
