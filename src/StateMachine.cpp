@@ -17,17 +17,17 @@ StateMachine::StateMachine(unsigned long disableTime10,
 
 bool StateMachine::Is7Overridden()
 {
-    return state6->name == "Active";
+    return state6->GetName() == "Active";
 }
 
 int StateMachine::GetStateOf11()
 {
-    return state7->is11Emitting ? HIGH : LOW;
+    return state7->Is11Emitting() ? HIGH : LOW;
 }
 
 int StateMachine::GetStateOf10()
 {
-    return state7->is10Emitting ? HIGH : LOW;
+    return state7->Is10Emitting() ? HIGH : LOW;
 }
 
 void StateMachine::Tick(unsigned long timeSinceLastLoop, int input7, int input6, double frequency)

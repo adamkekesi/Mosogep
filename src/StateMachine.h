@@ -60,14 +60,17 @@ protected:
     }
 
 public:
-    String name = "";
-
     virtual ~State6()
     {
     }
 
     virtual void Tick(unsigned long timeSinceLastLoop, int input6, double frequency)
     {
+    }
+
+    virtual String GetName()
+    {
+        return "";
     }
 };
 
@@ -77,8 +80,6 @@ private:
     void SwitchToActive();
 
 public:
-    String name = "Inactive";
-
     Inactive6(StateMachine *sm) : State6(sm)
     {
     }
@@ -88,6 +89,11 @@ public:
     }
 
     void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+
+    String GetName()
+    {
+        return "Inactive";
+    }
 };
 
 class Active6 : public State6
@@ -98,8 +104,6 @@ private:
     void SwitchToInactive();
 
 public:
-    String name = "Active";
-
     Active6(StateMachine *sm) : State6(sm)
     {
     }
@@ -109,6 +113,11 @@ public:
     }
 
     void Tick(unsigned long timeSinceLastLoop, int input6, double frequency);
+
+    String GetName()
+    {
+        return "Active";
+    }
 };
 
 class State7
@@ -122,17 +131,27 @@ protected:
     }
 
 public:
-    String name = "";
-
-    bool is10Emitting;
-    bool is11Emitting;
-
     virtual ~State7()
     {
     }
 
     virtual void Tick(unsigned long timeSinceLastLoop, int input7, double frequency)
     {
+    }
+
+    virtual String GetName()
+    {
+        return "";
+    }
+
+    virtual bool Is10Emitting()
+    {
+        return false;
+    }
+
+    virtual bool Is11Emitting()
+    {
+        return false;
     }
 };
 
@@ -142,11 +161,6 @@ private:
     void SwitchToActive();
 
 public:
-    String name = "Inactive";
-
-    bool is10Emitting = false;
-    bool is11Emitting = false;
-
     Inactive7(StateMachine *sm) : State7(sm)
     {
     }
@@ -156,6 +170,11 @@ public:
     }
 
     void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
+
+    String GetName()
+    {
+        return "Inactive";
+    }
 };
 
 class Active7 : public State7
@@ -166,11 +185,6 @@ private:
     void SwitchToInactive();
 
 public:
-    String name = "Active";
-
-    bool is10Emitting = false;
-    bool is11Emitting = true;
-
     Active7(StateMachine *sm) : State7(sm)
     {
     }
@@ -180,6 +194,21 @@ public:
     }
 
     void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
+
+    String GetName()
+    {
+        return "Active";
+    }
+
+    bool Is10Emitting()
+    {
+        return false;
+    }
+
+    bool Is11Emitting()
+    {
+        return true;
+    }
 };
 
 class OverriddenActive7 : public State7
@@ -190,11 +219,6 @@ private:
     void SwitchToInactive();
 
 public:
-    String name = "OverriddenActive";
-
-    bool is10Emitting = true;
-    bool is11Emitting = false;
-
     OverriddenActive7(StateMachine *sm) : State7(sm)
     {
     }
@@ -204,6 +228,21 @@ public:
     }
 
     void Tick(unsigned long timeSinceLastLoop, int input7, double frequency);
+
+    String GetName()
+    {
+        return "OverriddenActive";
+    }
+
+    bool Is10Emitting()
+    {
+        return true;
+    }
+
+    bool Is11Emitting()
+    {
+        return false;
+    }
 };
 
 #endif // StateMachine_h
