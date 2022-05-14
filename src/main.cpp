@@ -46,10 +46,11 @@ unsigned long lastTime = -1; // microsec
 
 unsigned long printTime = 0;
 
-StateMachine stateMachine(disableTime, disableTime, disableFreq10, disableFreq11, duration6);
+StateMachine* stateMachine;
 
 void setup()
 {
+  stateMachine = new StateMachine(disableTime, disableTime, disableFreq10, disableFreq11, duration6);
   pinMode(freqPin, INPUT);
   pinMode(input8Pin, INPUT);
   pinMode(input7Pin, INPUT);
@@ -136,13 +137,13 @@ void loop()
     disableFreq11 = freq2;
   }
 
-  stateMachine.disableFreq10 = disableFreq10;
-  stateMachine.disableFreq11 = disableFreq11;
-  stateMachine.Tick(timeSinceLastLoop, input7, input6, frequency);
-    Serial.println("1");
-
-  out11 = stateMachine.GetStateOf11();
-  out10 = stateMachine.GetStateOf10();
+  stateMachine->disableFreq10 = disableFreq10;
+  stateMachine->disableFreq11 = disableFreq11;
+  
+  stateMachine->Tick(timeSinceLastLoop, input7, input6, frequency);
+  
+  out11 = stateMachine->GetStateOf11();
+  out10 = stateMachine->GetStateOf10();
 
   // 8
   if (is8Enabled)
@@ -170,8 +171,9 @@ void loop()
   if (printTime > pow(10, 6))
   {
     Serial.println(frequency);
-    Serial.println(stateMachine.state6->GetName());
-    Serial.println(stateMachine.state7->GetName());
+    Serial.println(stateMachine->state6->GetName());
+    Serial.println(stateMachine->state7->GetName());
     printTime = 0;
   }
 }
+

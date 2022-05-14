@@ -53,10 +53,10 @@ class State6
 {
 protected:
     StateMachine *stateMachine;
-
+    
     State6(StateMachine *stateMachine)
     {
-        stateMachine = stateMachine;
+        this->stateMachine = stateMachine;
     }
 
 public:
@@ -127,7 +127,7 @@ protected:
 
     State7(StateMachine *stateMachine)
     {
-        stateMachine = stateMachine;
+        this->stateMachine = stateMachine;
     }
 
 public:

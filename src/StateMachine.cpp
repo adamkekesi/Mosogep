@@ -1,4 +1,5 @@
 #include "StateMachine.h"
+#include <Arduino.h>
 
 StateMachine::StateMachine(unsigned long disableTime10,
                            unsigned long disableTime11,
@@ -6,19 +7,13 @@ StateMachine::StateMachine(unsigned long disableTime10,
                            int disableFreq11,
                            unsigned long cooldown6)
 {
-    StateMachine *sm = this;
-    if (sm)
-    {
-        Serial.println("sm");
-    }
-
-    state6 = new Inactive6(sm);
-    state7 = new Inactive7(sm);
     this->disableTime10 = disableTime10;
     this->disableTime11 = disableTime11;
     this->cooldown6 = cooldown6;
     this->disableFreq10 = disableFreq10;
     this->disableFreq11 = disableFreq11;
+    this->state6 = new Inactive6(this);
+    this->state7 = new Inactive7(this);
 }
 
 bool StateMachine::Is7Overridden()
@@ -44,8 +39,8 @@ void StateMachine::Tick(unsigned long timeSinceLastLoop, int input7, int input6,
 
 void StateMachine::ChangeState6(State6 *newState)
 {
-    State6 *previous = state6;
-    state6 = newState;
+    State6 *previous = this->state6;
+    this->state6 = newState;
     if (previous)
     {
         delete previous;
@@ -54,8 +49,8 @@ void StateMachine::ChangeState6(State6 *newState)
 
 void StateMachine::ChangeState7(State7 *newState)
 {
-    State7 *previous = state7;
-    state7 = newState;
+    State7 *previous = this->state7;
+    this->state7 = newState;
     if (previous)
     {
         delete previous;
