@@ -166,18 +166,14 @@ void loop()
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
 
-  /* printTime += timeSinceLastLoop;
+  printTime += timeSinceLastLoop;
 
   if (printTime > pow(10, 6))
   {
+    Serial.print("freq:");
     Serial.println(frequency);
-    Serial.println(stateMachine->state6->GetName());
-    Serial.println(stateMachine->state7->GetName());
-    Serial.println(disableFreq10);
-    Serial.println(disableFreq11);
-    Serial.println(disableFreq12);
 
     printTime = 0;
-  } */
+  }
 }
 
