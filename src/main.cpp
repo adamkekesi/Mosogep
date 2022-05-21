@@ -157,10 +157,7 @@ void loop()
   }
   if (frequency <= disableFreq12 || disableTime12 >= disableTime)
   {
-    Serial.print("12: ");
-    Serial.print(frequency);
-    Serial.print("<=");
-    Serial.println(disableFreq12);
+   
     is8Enabled = false;
     out12 = LOW;
     disableTime12 = 0;
