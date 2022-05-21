@@ -166,7 +166,7 @@ void loop()
   digitalWrite(output11Pin, out11);
   digitalWrite(output10Pin, out10);
 
-  printTime += timeSinceLastLoop;
+  /* printTime += timeSinceLastLoop;
 
   if (printTime > pow(10, 6))
   {
@@ -178,6 +178,6 @@ void loop()
     Serial.println(disableFreq12);
 
     printTime = 0;
-  }
+  } */
 }
 
