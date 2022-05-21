@@ -22,9 +22,9 @@ double freq1 = 39.7;
 double freq2 = 39.3;
 double freq3 = 40.1;
 
-int disableFreq12 = freq2;
-int disableFreq11 = freq2;
-int disableFreq10 = freq1;
+double disableFreq12 = freq2;
+double disableFreq11 = freq2;
+double disableFreq10 = freq1;
 
 unsigned long disableTime12;
 
