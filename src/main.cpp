@@ -94,7 +94,7 @@ void loop()
   int input7 = digitalRead(input7Pin);
   int input6 = digitalRead(input6Pin);
 
-  // 7 és 8
+  /* // 7 és 8
   if (cooldown8 > 0)
   {
     cooldown8 -= timeSinceLastLoop;
@@ -135,7 +135,7 @@ void loop()
   {
     disableFreq12 = freq2;
     disableFreq11 = freq2;
-  }
+  } */
 
   stateMachine->disableFreq10 = disableFreq10;
   stateMachine->disableFreq11 = disableFreq11;
@@ -173,6 +173,10 @@ void loop()
     Serial.println(frequency);
     Serial.println(stateMachine->state6->GetName());
     Serial.println(stateMachine->state7->GetName());
+    Serial.println(disableFreq10);
+    Serial.println(disableFreq11);
+    Serial.println(disableFreq12);
+
     printTime = 0;
   }
 }
