@@ -114,12 +114,14 @@ void Active7::Tick(unsigned long timeSinceLastLoop, int input7, double frequency
     timer += timeSinceLastLoop;
     if (timer >= stateMachine->disableTime11)
     {
+        Serial.print("11: ");
         Serial.println("timer");
         SwitchToInactive();
         return;
     }
     if (frequency <= stateMachine->disableFreq11)
     {
+        Serial.print("11: ");
         Serial.print(frequency);
         Serial.print("<=");
         Serial.println(stateMachine->disableFreq11);
@@ -138,11 +140,17 @@ void OverriddenActive7::Tick(unsigned long timeSinceLastLoop, int input7, double
     timer += timeSinceLastLoop;
     if (timer >= stateMachine->disableTime10)
     {
+        Serial.print("10: ");
+        Serial.println("timer");
         SwitchToInactive();
         return;
     }
     if (frequency <= stateMachine->disableFreq10)
     {
+        Serial.print("10: ");
+        Serial.print(frequency);
+        Serial.print("<=");
+        Serial.println(stateMachine->disableFreq10);
         SwitchToInactive();
         return;
     }

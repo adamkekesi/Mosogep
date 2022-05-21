@@ -15,7 +15,7 @@ int output12Pin = 12;
 int output11Pin = 11;
 int output10Pin = 10;
 
-unsigned long disableTime = 4 * 60 * pow(10, 6);
+unsigned long disableTime = 2 * 60 * pow(10, 6);
 unsigned long duration6 = 1 * 60 * pow(10, 6);
 
 int freq1 = 43;
@@ -46,7 +46,7 @@ unsigned long lastTime = -1; // microsec
 
 unsigned long printTime = 0;
 
-StateMachine* stateMachine;
+StateMachine *stateMachine;
 
 void setup()
 {
@@ -139,9 +139,9 @@ void loop()
 
   stateMachine->disableFreq10 = disableFreq10;
   stateMachine->disableFreq11 = disableFreq11;
-  
+
   stateMachine->Tick(timeSinceLastLoop, input7, input6, frequency);
-  
+
   out11 = stateMachine->GetStateOf11();
   out10 = stateMachine->GetStateOf10();
 
@@ -157,6 +157,10 @@ void loop()
   }
   if (frequency <= disableFreq12 || disableTime12 >= disableTime)
   {
+    Serial.print("12: ");
+    Serial.print(frequency);
+    Serial.print("<=");
+    Serial.println(disableFreq12);
     is8Enabled = false;
     out12 = LOW;
     disableTime12 = 0;
@@ -176,4 +180,3 @@ void loop()
     printTime = 0;
   }
 }
-
