@@ -3,8 +3,8 @@
 
 StateMachine::StateMachine(unsigned long disableTime10,
                            unsigned long disableTime11,
-                           int disableFreq10,
-                           int disableFreq11,
+                           double disableFreq10,
+                           double disableFreq11,
                            unsigned long cooldown6)
 {
     this->disableTime10 = disableTime10;
