@@ -18,9 +18,9 @@ int output10Pin = 10;
 unsigned long disableTime = 2 * 60 * pow(10, 6);
 unsigned long duration6 = 1 * 60 * pow(10, 6);
 
-int freq1 = 43;
-int freq2 = 43.5;
-int freq3 = 42.5;
+double freq1 = 39.7;
+double freq2 = 39.3;
+double freq3 = 40.1;
 
 int disableFreq12 = freq2;
 int disableFreq11 = freq2;
