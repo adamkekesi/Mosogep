@@ -48,6 +48,12 @@ unsigned long printTime = 0;
 
 StateMachine *stateMachine;
 
+int delay = 2 * pow(10, 6); // 2 sec
+
+int input8Delay = delay;
+int input7Delay = delay;
+int input6Delay = delay;
+
 void setup()
 {
   stateMachine = new StateMachine(disableTime, disableTime, disableFreq10, disableFreq11, duration6);
@@ -91,8 +97,46 @@ void loop()
   double frequency = freq.frequency;
 
   int input8 = digitalRead(input8Pin);
+  if (input8 == LOW)
+  {
+    input8Delay = delay;
+  }
+  if (input8 == HIGH)
+  {
+    input8Delay -= timeSinceLastLoop;
+  }
+  if (input8Delay > 0)
+  {
+    input8 = LOW;
+  }
+
   int input7 = digitalRead(input7Pin);
+  if (input7 == LOW)
+  {
+    input7Delay = delay;
+  }
+  if (input7 == HIGH)
+  {
+    input7Delay -= timeSinceLastLoop;
+  }
+  if (input7Delay > 0)
+  {
+    input7 = LOW;
+  }
+
   int input6 = digitalRead(input6Pin);
+  if (input6 == LOW)
+  {
+    input6Delay = delay;
+  }
+  if (input6 == HIGH)
+  {
+    input6Delay -= timeSinceLastLoop;
+  }
+  if (input6Delay > 0)
+  {
+    input6 = LOW;
+  }
 
   /* // 7 és 8
   if (cooldown8 > 0)
@@ -157,7 +201,7 @@ void loop()
   }
   if (frequency <= disableFreq12 || disableTime12 >= disableTime)
   {
-   
+
     is8Enabled = false;
     out12 = LOW;
     disableTime12 = 0;
