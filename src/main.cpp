@@ -48,11 +48,11 @@ unsigned long printTime = 0;
 
 StateMachine *stateMachine;
 
-int delay = 2 * pow(10, 6); // 2 sec
+int delay2 = 2 * pow(10, 6); // 2 sec
 
-int input8Delay = delay;
-int input7Delay = delay;
-int input6Delay = delay;
+int input8Delay = delay2;
+int input7Delay = delay2;
+int input6Delay = delay2;
 
 void setup()
 {
@@ -99,7 +99,7 @@ void loop()
   int input8 = digitalRead(input8Pin);
   if (input8 == LOW)
   {
-    input8Delay = delay;
+    input8Delay = delay2;
   }
   if (input8 == HIGH)
   {
@@ -113,7 +113,7 @@ void loop()
   int input7 = digitalRead(input7Pin);
   if (input7 == LOW)
   {
-    input7Delay = delay;
+    input7Delay = delay2;
   }
   if (input7 == HIGH)
   {
@@ -127,7 +127,7 @@ void loop()
   int input6 = digitalRead(input6Pin);
   if (input6 == LOW)
   {
-    input6Delay = delay;
+    input6Delay = delay2;
   }
   if (input6 == HIGH)
   {
