@@ -48,7 +48,7 @@ unsigned long printTime = 0;
 
 StateMachine *stateMachine;
 
-int delay2 = 2 * pow(10, 6); // 2 sec
+int delay2 = 1 * pow(10, 6); // 1 sec
 
 int input8Delay = delay2;
 int input7Delay = delay2;
