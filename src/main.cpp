@@ -15,12 +15,12 @@ int output12Pin = 12;
 int output11Pin = 11;
 int output10Pin = 10;
 
-unsigned long disableTime = 2 * 60 * pow(10, 6);
+unsigned long disableTime = 3 * 60 * pow(10, 6);
 unsigned long duration6 = 1 * 60 * pow(10, 6);
 
-double freq1 = 39.7;
-double freq2 = 39.3;
-double freq3 = 40.1;
+double freq1 = 39.4;
+double freq2 = 38.7;
+double freq3 = 39.4;
 
 double disableFreq12 = freq2;
 double disableFreq11 = freq2;
